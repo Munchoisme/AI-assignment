@@ -1,0 +1,99 @@
+male(john).
+male(peter).
+male(george).
+male(greg).
+male(epstein).
+male(jason).
+male(edwin).
+male(herman).
+male(brian).
+male(anto).
+male(mark).
+male(nash).
+male(kimani).
+male(onjiri).
+
+
+female(ashley).
+female(hailey).
+female(nduta).
+female(mary).
+female(anne).
+female(emma).
+female(bernadette).
+female(precious).
+female(beverly).
+female(linda).
+female(njeri).
+female(mango).
+female(anna).
+
+
+
+parent(john,peter).
+parent(ashley,peter).
+
+parent(john,hailey).
+parent(ashley,hailey).
+
+parent(peter,mark).
+parent(mary,mark).
+
+parent(peter,emma).
+parent(mary,emma).
+
+parent(hailey,brian).
+parent(greg,brian).
+
+parent(hailey,precious).
+parent(greg,precious).
+
+parent(george,john).
+parent(anne,john).
+
+parent(george,nduta).
+parent(anne,nduta).
+
+parent(nduta,jason).
+parent(edwin,jason).
+
+parent(nduta,linda).
+parent(edwin,linda).
+
+
+father(F,C) :- male(F), parent(F,C).
+mother(M,C) :- female(M), parent(M,C).
+
+child(C,P) :- parent(P,C).
+
+
+father(X,Y) :-parents(X,Y), male(X).
+
+motherX,Y) :-parents(X,Y), female(X).
+
+grandparent(G,C) :-parent(G,P),parent(P,C).
+
+
+grandfather(GF,C) :-grandparent(GF,C), male(GF).
+
+grandmother(GM,C) :-grandparent(GM,C), female(GM).
+
+grandchild(C,G) :-grandparent(G,C).
+
+
+sibling(X,Y) :-parent(P,X), parent(P,Y),
+X\=Y.
+
+brother(B,X) :-male(B), sibling(B,X).
+
+
+sister(S,X) :-female(S), sibling(S,X).
+
+uncle(U,C) :-brother(U,P), parent(P,C).
+
+aunt(A,C) :-sister(A,P), parent(P,C).
+
+cousin(X,Y) :-parent(P1,X), parent(P2,Y), sibling(P1,P2),
+X\=Y.
+
+diff(X,Y):-X\==Y.
