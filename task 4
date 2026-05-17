@@ -1,0 +1,117 @@
+
+from collections import deque  
+
+GRAPH = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'G'],
+    'F': ['C', 'G'],
+    'G': ['E', 'F'],   
+}
+
+#BFS and DFS implementations with detailed step by step output
+def bfs(graph, start, goal):
+    print("\n" + "=" * 60)
+    print("  BREADTH-FIRST SEARCH (BFS)")
+    print("=" * 60)
+    print(f"  Start : {start}")
+    print(f"  Goal  : {goal}")
+    print("-" * 60)
+
+    queue = deque()
+    queue.append((start, [start]))
+
+    visited = set()
+    visited.add(start)
+
+
+    step = 1 
+    while queue:
+
+        current_node, path = queue.popleft()
+
+        print(f"  Step {step:02d} | Visiting: {current_node:3s} | "
+              f"Queue size: {len(queue):2d} | Path so far: {' → '.join(path)}")
+        step += 1
+
+        if current_node == goal:
+            print("-" * 60)
+            print(f"  GOAL FOUND!")
+            print(f"  Search path : {' → '.join(path)}")
+            print(f"  Path length : {len(path) - 1} edge(s)")
+            print("=" * 60)
+            return path
+
+    
+        for neighbour in graph[current_node]:
+            if neighbour not in visited:       
+                visited.add(neighbour)         
+                new_path = path + [neighbour]   
+                queue.append((neighbour, new_path))  
+
+
+    print(f"  No path found from '{start}' to '{goal}'.")
+    print("=" * 60)
+    return []
+
+def dfs(graph, start, goal):
+   
+    print("\n" + "=" * 60)
+    print("  DEPTH-FIRST SEARCH (DFS)")
+    print("=" * 60)
+    print(f"  Start : {start}")
+    print(f"  Goal  : {goal}")
+    print("-" * 60)
+
+    stack = [(start, [start])]
+
+    visited = set()
+
+    step = 1 
+    while stack:
+        current_node, path = stack.pop()
+
+        if current_node in visited:
+            continue
+
+        visited.add(current_node)  
+
+        print(f"  Step {step:02d} | Visiting: {current_node:3s} | "
+              f"Stack size: {len(stack):2d} | Path so far: {' → '.join(path)}")
+        step += 1
+
+        if current_node == goal:
+            print("-" * 60)
+            print(f"  GOAL FOUND!")
+            print(f"  Search path : {' → '.join(path)}")
+            print(f"  Path length : {len(path) - 1} edge(s)")
+            print("=" * 60)
+            return path
+
+
+        for neighbour in reversed(graph[current_node]):
+            if neighbour not in visited:
+                new_path = path + [neighbour]
+                stack.append((neighbour, new_path)) 
+
+    print(f"  No path found from '{start}' to '{goal}'.")
+    print("=" * 60)
+    return []
+
+if __name__ == "__main__":
+
+    START_NODE = 'A'  
+    GOAL_NODE  = 'G'   
+
+    print("\n" + "#" * 60)
+    print("#  Graph Search: BFS vs DFS")
+    print("#  Graph nodes:", list(GRAPH.keys()))
+    print("#  Edges:", sum(len(v) for v in GRAPH.values()) // 2)
+    print("#" * 60)
+
+    bfs_result = bfs(GRAPH, START_NODE, GOAL_NODE)
+
+    dfs_result = dfs(GRAPH, START_NODE, GOAL_NODE)
+
